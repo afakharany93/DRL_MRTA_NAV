@@ -1,0 +1,21 @@
+<launch>
+  <param name="/use_sim_time" value="true" />
+
+  <!-- start world -->
+  <!-- <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find turtlebot3_gazebo)/worlds/empty.world" respawn="false" output="screen" /> -->
+
+  <!-- start gui -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- include our robots -->
+  <include file="$(find multi_robot)/launch/robots.launch"/>
+  <!-- <node pkg="turtlebot3_dqn" type="combination_obstacle_1" name="combination_obstacle_1" output="screen" />
+  <node pkg="turtlebot3_dqn" type="combination_obstacle_2" name="combination_obstacle_2" output="screen" /> -->
+</launch>

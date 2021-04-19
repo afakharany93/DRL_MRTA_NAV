@@ -1,0 +1,25 @@
+<launch>
+    <arg name="ns_" default="robot"/>
+    <arg name="ns_tf" default="robot_tf"/>
+    <arg name="robot_name"/>
+    <arg name="init_pose"/>
+    <arg name="x_pos" default="-0.7"/>
+    <arg name="y_pos" default="0.0"/>
+    <arg name="z_pos" default="0.0"/>
+    <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+    <!-- No namespace here as we will share this description.
+         Access with slash at the beginning -->
+    <!-- <param name="robot_description" command="$(find xacro)/xacro.py $(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro" /> -->
+    <param name="robot_description" command="$(find xacro)/xacro.py $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+
+
+    <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param /robot_description -model $(arg robot_name)" respawn="false" output="screen" /> -->
+    <group ns="$(arg ns_)">
+      <param name="tf_prefix" value="$(arg ns_tf)" />
+      <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg robot_name) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param /robot_description" />
+    </group>
+    <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
+
+    <!-- The odometry estimator, throttling, fake laser etc. go here -->
+    <!-- All the stuff as from usual robot launch file -->
+</launch>

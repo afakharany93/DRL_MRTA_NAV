@@ -1,0 +1,27 @@
+<launch>
+  <arg name="stage" default="4"/>
+  <arg name="gui_on" default="false"/>
+  <param name="stage_number"  value="$(arg stage)"/>
+  <param name="/use_sim_time" value="true" />
+  <param name="real_time_update_rate" value="0.0" />
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+
+  <!-- start world -->
+  <!-- <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find turtlebot3_gazebo)/worlds/empty.world" respawn="false" output="screen" /> -->
+
+  <!-- start gui -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_stage_$(arg stage).world"/>
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="$(arg gui_on)"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="verbose" value="true" />
+  </include>
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+  <!-- include our robots -->
+  <!-- <include file="$(find multi_robot)/launch/robots.launch"/> -->
+  <node pkg="turtlebot3_dqn" type="combination_obstacle_1" name="combination_obstacle_1" output="screen" />
+  <node pkg="turtlebot3_dqn" type="combination_obstacle_2" name="combination_obstacle_2" output="screen" />
+</launch>
